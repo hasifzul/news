@@ -206,7 +206,7 @@ function pills(i){
   p.push(`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`);
   p.push(`<span class="pill p-cat">${esc(t(i.cat)||i.cat)}</span>`);
   if(i.isNew) p.push(`<span class="pill p-new">${esc(t("nw"))}</span>`);
-  if(i.ai) p.push(`<span class="pill p-aiv">${esc(i.ai)}</span>`);
+  if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat==="tech"?"background:var(--tc)":""}">${esc(i.ai)}</span>`);
   if(isRt(i)) p.push(`<span class="pill p-rt">Reuters</span>`);
   (i.tags||[]).slice(0,2).forEach(g=>p.push(`<span class="pill p-tag">${esc(tx(g))}</span>`));
   return p.join("");
