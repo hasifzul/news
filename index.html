@@ -73,6 +73,7 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 .p-cat{background:var(--cs);color:var(--cc)}
 .p-new{background:var(--new);color:#fff}
 .p-rt{background:var(--rt);color:#fff}
+.p-aw{background:#c8102e;color:#fff}
 .p-tag{background:var(--soft);color:var(--muted)}
 .p-aiv{background:var(--ai);color:#fff}
 .subtabs{display:flex;gap:4px;margin:2px 0 6px}
@@ -186,6 +187,7 @@ const current=()=>S.viewing||S.latest;
 function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0))}
 function byCat(doc,c){const r=items(doc).filter(i=>i.cat===c);if(c==="ai")r.sort((a,b)=>(b.impact||0)-(a.impact||0)||aiRank(a)-aiRank(b));if(c==="mynews")r.sort((a,b)=>(a.pop||99)-(b.pop||99));return r}
 const isRt=i=>(i.sources||[]).some(s=>/reuters/i.test(s.n||""));
+const isAw=i=>(i.sources||[]).some(s=>/awani/i.test((s.n||"")+(s.u||"")));
 
 function renderTabs(){
   const doc=current();
@@ -209,6 +211,7 @@ function pills(i){
   if(i.isNew) p.push(`<span class="pill p-new">${esc(t("nw"))}</span>`);
   if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat==="tech"?"background:var(--tc)":i.cat==="mynews"?"background:var(--my)":""}">${esc(i.ai)}</span>`);
   if(isRt(i)) p.push(`<span class="pill p-rt">Reuters</span>`);
+  if(isAw(i)) p.push(`<span class="pill p-aw">Awani</span>`);
   (i.tags||[]).slice(0,2).forEach(g=>p.push(`<span class="pill p-tag">${esc(tx(g))}</span>`));
   return p.join("");
 }
@@ -226,7 +229,7 @@ function card(i){
 function mini(i){
   const cc=(CAT[i.cat]||CAT.global).cls;
   if(S.open===i.id) return `<div data-close="${esc(i.id)}">${card(i)}</div>`;
-  return `<button class="mini ${cc}" data-open="${esc(i.id)}"><span class="bar"></span><span class="tx">${esc(tx(i.title))}<small>${esc(t(i.cat))}${i.ai?" · "+esc(i.ai):""}${i.isNew?" · "+esc(t("nw")):""}${isRt(i)?" · Reuters":""}</small></span><span class="ar">▾</span></button>`;
+  return `<button class="mini ${cc}" data-open="${esc(i.id)}"><span class="bar"></span><span class="tx">${esc(tx(i.title))}<small>${esc(t(i.cat))}${i.ai?" · "+esc(i.ai):""}${i.isNew?" · "+esc(t("nw")):""}${isRt(i)?" · Reuters":""}${isAw(i)?" · Awani":""}</small></span><span class="ar">▾</span></button>`;
 }
 function sec(label,color){return `<div class="sec" style="color:${color}"><i style="background:${color}"></i>${esc(label)}</div>`}
 
@@ -238,7 +241,7 @@ function render(){
   $("sizes").innerHTML=SIZES.map((z,ix)=>`<button class="btn ${S.fs===z?"on":""}" data-z="${z}" style="font-size:${9+ix*1.5}px">A</button>`).join("");
   $("sizes").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fs=+b.dataset.z;save();render()});
   $("foot").textContent=t("foot");
-  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--tc)"></i>${esc(t("techNews"))}</span><span><i style="background:var(--rt)"></i>Reuters</span>`;
+  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--tc)"></i>${esc(t("techNews"))}</span><span><i style="background:var(--rt)"></i>Reuters</span><span><i style="background:#c8102e"></i>Awani</span>`;
   const doc=current();
   let stale=S.state==="unreach";
   if(doc&&doc.updatedAt){
