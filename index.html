@@ -11,11 +11,11 @@
   --bg:#f3f4f8;--card:#ffffff;--ink:#141824;--muted:#646b7d;--line:#e3e6ee;--soft:#f6f7fa;
   --crit:#e5383b;--crit-s:#fde8e8;--major:#f59e0b;--major-s:#fff3d6;
   --my:#1e63d6;--my-s:#e6efff;--gl:#0b9b83;--gl-s:#e0f6f1;--geo:#8b3fd9;--geo-s:#f1e7fd;
-  --ai:#d6336c;--ai-s:#fde6ee;--new:#12b76a;--rt:#ff7a00;--fs:13px;
+  --ai:#d6336c;--ai-s:#fde6ee;--tc:#0891b2;--tc-s:#e0f5fa;--new:#12b76a;--rt:#ff7a00;--fs:13px;
 }
 @media (prefers-color-scheme:dark){
   :root{--bg:#0e1117;--card:#171b24;--ink:#e9ecf2;--muted:#9aa2b4;--line:#262c39;--soft:#1d2230;
-  --crit-s:#3a1719;--ai-s:#3a1324;--major-s:#3a2c0c;--my-s:#14233f;--gl-s:#0f2e29;--geo-s:#271a3b;}
+  --crit-s:#3a1719;--ai-s:#3a1324;--tc-s:#0d2d36;--major-s:#3a2c0c;--my-s:#14233f;--gl-s:#0f2e29;--geo-s:#271a3b;}
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:var(--fs);line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -75,13 +75,17 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 .p-rt{background:var(--rt);color:#fff}
 .p-tag{background:var(--soft);color:var(--muted)}
 .p-aiv{background:var(--ai);color:#fff}
+.subtabs{display:flex;gap:4px;margin:2px 0 6px}
+.subtabs button{font:700 10.5px Inter,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:6px;padding:3px 10px;cursor:pointer}
+.subtabs button.on{color:#fff;border-color:transparent}
+.subtabs .n{font-weight:600;opacity:.75;margin-left:3px}
 .card h2{font-size:1.06em;font-weight:700;line-height:1.35;margin:0 0 4px;letter-spacing:-.005em}
 .card p{margin:0 0 6px;color:var(--ink);opacity:.88;font-size:.96em}
 .why{font-size:.92em;background:var(--cs);border-radius:6px;padding:6px 8px;margin:6px 0 5px;border-left:3px solid var(--cc)}
 .why b{font-size:.78em;letter-spacing:.07em;text-transform:uppercase;color:var(--cc);display:block;margin-bottom:1px}
 .src{font-size:.78em;color:var(--muted)}
 .src a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
-.c-ai{--cc:var(--ai);--cs:var(--ai-s)}.c-my{--cc:var(--my);--cs:var(--my-s)}.c-global{--cc:var(--gl);--cs:var(--gl-s)}.c-geo{--cc:var(--geo);--cs:var(--geo-s)}
+.c-ai{--cc:var(--ai);--cs:var(--ai-s)}.c-tech{--cc:var(--tc);--cs:var(--tc-s)}.c-my{--cc:var(--my);--cs:var(--my-s)}.c-global{--cc:var(--gl);--cs:var(--gl-s)}.c-geo{--cc:var(--geo);--cs:var(--geo-s)}
 
 .mini{display:flex;gap:8px;align-items:flex-start;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:5px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
 .mini .bar{width:4px;align-self:stretch;border-radius:2px;background:var(--cc);flex:none}
@@ -138,13 +142,13 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 <script>
 (function(){
 const T={
- en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",watch:"Watchlist",arch:"Archive",
+ en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",tech:"Tech",techTab:"Tech",techNews:"Tech News",watch:"Watchlist",arch:"Archive",
    upd:"Updated",next:"Next",crit:"Critical",major:"Major",nw:"New",why:"Why it matters",src:"Source",brief:"Today in brief",
    critNow:"Critical now",alsoMajor:"Also major",loading:"Loading…",none:"No briefing yet — the first refresh will fill this in.",noitems:"No big stories here right now.",
    unreach:"Can't reach the news store yet. Retrying…",stale:"May be out of date",live:"LIVE",old:"OLD",size:"Text size",back:"← Back to latest",
    archNone:"No past editions yet.",foot:"Auto-refresh 4× daily: 6am, 12pm, 6pm, 12am (MYT). Big stories only.",viewing:"Edition",stories:"stories",
    today:"Today",tmr:"Tomorrow",inD:"In {n} days",past:"Passed",lgCrit:"Critical — moves markets / security",lgMajor:"Major",tapMore:"Tap for details"},
- bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",watch:"Pantauan",arch:"Arkib",
+ bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",tech:"Teknologi",techTab:"Teknologi",techNews:"Berita Teknologi",watch:"Pantauan",arch:"Arkib",
    upd:"Dikemas kini",next:"Seterusnya",crit:"Kritikal",major:"Besar",nw:"Baharu",why:"Kenapa penting",src:"Sumber",brief:"Ringkasan hari ini",
    critNow:"Kritikal sekarang",alsoMajor:"Berita besar lain",loading:"Memuatkan…",none:"Belum ada ringkasan — kemas kini pertama akan mengisinya.",noitems:"Tiada berita besar di sini buat masa ini.",
    unreach:"Belum dapat capai stor berita. Mencuba lagi…",stale:"Mungkin tidak terkini",live:"TERKINI",old:"LAMA",size:"Saiz teks",back:"← Kembali ke terkini",
@@ -153,11 +157,11 @@ const T={
 };
 const SIZES=[11,12,13,14];
 const SLOTS=[6,12,18,24];
-const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"}};
+const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"},tech:{c:"var(--tc)",cls:"c-tech"}};
 const AIRANK=["claude","chatgpt","openai","gemini","google","deepseek","kimi","moonshot","grok","xai","llama","meta","qwen","mistral"];
 const aiRank=i=>{const v=String(i.ai||"").toLowerCase();const k=AIRANK.findIndex(x=>v.includes(x));return k<0?99:k};
-const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",ai:"var(--ai)",watch:"var(--major)",arch:"var(--muted)"};
-let S={lang:"en",tab:"top",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
+const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",ai:"var(--ai)",tech:"var(--tc)",watch:"var(--major)",arch:"var(--muted)"};
+let S={lang:"en",tab:"top",sub:"ai",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
 try{const s=JSON.parse(localStorage.getItem("nb-prefs2")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
 function save(){try{localStorage.setItem("nb-prefs2",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -185,13 +189,14 @@ const isRt=i=>(i.sources||[]).some(s=>/reuters/i.test(s.n||""));
 
 function renderTabs(){
   const doc=current();
-  const tabs=["top","my","global","geo","ai","watch","arch"];
+  const tabs=["top","my","global","geo","tech","watch","arch"];
   $("tabs").innerHTML=tabs.map(k=>{
     let n="";
-    if(doc&&CAT[k]) n=byCat(doc,k).length;
+    if(doc&&k==="tech") n=byCat(doc,"ai").length+byCat(doc,"tech").length;
+    else if(doc&&CAT[k]) n=byCat(doc,k).length;
     if(doc&&k==="watch"&&Array.isArray(doc.watch)) n=doc.watch.filter(w=>dayDiff(w.date)>=0).length;
     const on=S.tab===k;
-    return `<button data-t="${k}" class="${on?"on":""}" style="${on?`background:${TABC[k]}`:""}">${!on&&k!=="arch"?`<span class="c" style="background:${TABC[k]}"></span>`:""}${esc(t(k))}${n!==""?`<span class="n">${n}</span>`:""}</button>`;
+    return `<button data-t="${k}" class="${on?"on":""}" style="${on?`background:${TABC[k]}`:""}">${!on&&k!=="arch"?`<span class="c" style="background:${TABC[k]}"></span>`:""}${esc(k==="tech"?t("techTab"):t(k))}${n!==""?`<span class="n">${n}</span>`:""}</button>`;
   }).join("");
   $("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>go(b.dataset.t));
 }
@@ -232,7 +237,7 @@ function render(){
   $("sizes").innerHTML=SIZES.map((z,ix)=>`<button class="btn ${S.fs===z?"on":""}" data-z="${z}" style="font-size:${9+ix*1.5}px">A</button>`).join("");
   $("sizes").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fs=+b.dataset.z;save();render()});
   $("foot").textContent=t("foot");
-  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--rt)"></i>Reuters</span>`;
+  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--tc)"></i>${esc(t("techNews"))}</span><span><i style="background:var(--rt)"></i>Reuters</span>`;
   const doc=current();
   let stale=S.state==="unreach";
   if(doc&&doc.updatedAt){
@@ -256,7 +261,7 @@ function render(){
       <button class="stat s-my" data-go="my"><b>${byCat(doc,"my").length}</b><span>${esc(t("my"))}</span></button>
       <button class="stat s-gl" data-go="global"><b>${byCat(doc,"global").length}</b><span>${esc(t("global"))}</span></button>
       <button class="stat s-geo" data-go="geo"><b>${byCat(doc,"geo").length}</b><span>${esc(t("geo"))}</span></button>
-      <button class="stat s-ai" data-go="ai"><b>${byCat(doc,"ai").length}</b><span>AI</span></button></div>`;
+      <button class="stat s-ai" data-go="tech"><b>${byCat(doc,"ai").length+byCat(doc,"tech").length}</b><span>${esc(t("techTab"))}</span></button></div>`;
     if(Array.isArray(doc.markets)&&doc.markets.length) h+=`<div class="mk">${doc.markets.map(x=>{const d=String(x.d||"").trim();const dn=d.startsWith("-");return `<div><b>${esc(x.k)}</b>${esc(x.v)} ${d?`<span class="${dn?"dn":"up"}">${dn?"▼":"▲"} ${esc(d.replace(/^[+-]/,""))}</span>`:""}</div>`}).join("")}</div>`;
     const crit=all.filter(i=>(i.impact||0)>=3), maj=all.filter(i=>(i.impact||0)<3);
     if(crit.length){h+=sec(t("critNow"),"var(--crit)");h+=crit.map(card).join("");}
@@ -270,8 +275,11 @@ function render(){
       return `<div class="ev" style="--ec:${dd<0?"var(--muted)":ec}"><div class="h"><span class="cd">${esc(lbl)}</span><span class="dt">${isNaN(d)?esc(x.date):esc(d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short",timeZone:"Asia/Kuala_Lumpur"}))}</span></div><h3>${esc(tx(x.title))}</h3><p>${esc(tx(x.note))}</p></div>`}).join("")}</div>`
       :`<div class="empty">${esc(t("noitems"))}</div>`;
   } else {
-    const its=byCat(doc,S.tab);
-    const c=(CAT[S.tab]||{}).c||"var(--ink)";
+    const cat=S.tab==="tech"?S.sub:S.tab;
+    if(S.tab==="tech"){const na=byCat(doc,"ai").length,nt=byCat(doc,"tech").length;
+      h+=`<div class="subtabs"><button data-sub="ai" class="${S.sub==="ai"?"on":""}" style="${S.sub==="ai"?"background:var(--ai)":""}">AI<span class="n">${na}</span></button><button data-sub="tech" class="${S.sub==="tech"?"on":""}" style="${S.sub==="tech"?"background:var(--tc)":""}">${esc(t("techNews"))}<span class="n">${nt}</span></button></div>`;}
+    const its=byCat(doc,cat);
+    const c=(CAT[cat]||{}).c||"var(--ink)";
     const crit=its.filter(i=>(i.impact||0)>=3), maj=its.filter(i=>(i.impact||0)<3);
     if(crit.length){h+=sec(t("crit"),"var(--crit)");h+=crit.map(card).join("");}
     if(maj.length){h+=sec(t("major"),c);h+=maj.map(card).join("");}
@@ -279,6 +287,7 @@ function render(){
   }
   m.innerHTML=h;
   m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g!=="top")go(g)});
+  m.querySelectorAll("[data-sub]").forEach(b=>b.onclick=()=>{S.sub=b.dataset.sub;render()});
   m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.open=b.dataset.open;render()});
   m.querySelectorAll("[data-close]").forEach(b=>b.onclick=e=>{if(e.target.closest("a"))return;S.open=null;render()});
   const b=$("back");if(b)b.onclick=()=>{S.viewing=null;render()};
