@@ -201,7 +201,7 @@ function renderTabs(){
   }).join("");
   $("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>go(b.dataset.t));
 }
-function go(tab){S.tab=tab;S.open=null;save();render();window.scrollTo(0,0)}
+function go(tab){S.tab=tab;S.open=null;save();render();window.scrollTo(0,0);if(tab==="arch"&&window.__loadArch)window.__loadArch()}
 function pills(i){
   const imp=i.impact||2;const p=[];
   p.push(imp>=2?`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`:`<span class="pill p-tag">${esc(t("gen"))}</span>`);
@@ -314,6 +314,10 @@ setInterval(()=>{if(!S.viewing)render()},60000);
 
 (async()=>{
   const timer=setTimeout(()=>{if(S.state==="loading"){S.state="unreach";render();}},10000);
+  async function loadArch(){
+    try{const a=await fetch("data/archive.json?t="+Date.now(),{cache:"no-store"});if(a.ok){S.archive=(await a.json()).slice().sort((x,y)=>String(y.date).localeCompare(String(x.date)));if(S.tab==="arch")render();}}catch(e){}
+  }
+  window.__loadArch=loadArch;
   async function load(){
     try{
       const bust="?t="+Date.now();
@@ -322,7 +326,7 @@ setInterval(()=>{if(!S.viewing)render()},60000);
       const j=await r.json();
       clearTimeout(timer);
       if(!S.latest||S.latest.updatedAt!==j.updatedAt){S.latest=j;S.state="ok";render();}
-      try{const a=await fetch("data/archive.json"+bust,{cache:"no-store"});if(a.ok){S.archive=(await a.json()).slice().sort((x,y)=>String(y.date).localeCompare(String(x.date)));if(S.tab==="arch")render();}}catch(e){}
+      if(S.tab==="arch") loadArch();
     }catch(e){ if(!S.latest){S.state="unreach";render();} }
   }
   load();
