@@ -142,13 +142,13 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 <script>
 (function(){
 const T={
- en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",tech:"Tech",techTab:"Tech",techNews:"Tech News",watch:"Watchlist",arch:"Archive",
+ en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",tech:"Tech",techTab:"Tech",techNews:"Tech News",mynews:"Local",myBig:"Big News",myAll:"All News",gen:"News",watch:"Watchlist",arch:"Archive",
    upd:"Updated",next:"Next",crit:"Critical",major:"Major",nw:"New",why:"Why it matters",src:"Source",brief:"Today in brief",
    critNow:"Critical now",alsoMajor:"Also major",loading:"Loading…",none:"No briefing yet — the first refresh will fill this in.",noitems:"No big stories here right now.",
    unreach:"Can't reach the news store yet. Retrying…",stale:"May be out of date",live:"LIVE",old:"OLD",size:"Text size",back:"← Back to latest",
    archNone:"No past editions yet.",foot:"Auto-refresh 4× daily: 6am, 12pm, 6pm, 12am (MYT). Big stories only.",viewing:"Edition",stories:"stories",
    today:"Today",tmr:"Tomorrow",inD:"In {n} days",past:"Passed",lgCrit:"Critical — moves markets / security",lgMajor:"Major",tapMore:"Tap for details"},
- bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",tech:"Teknologi",techTab:"Teknologi",techNews:"Berita Teknologi",watch:"Pantauan",arch:"Arkib",
+ bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",tech:"Teknologi",techTab:"Teknologi",techNews:"Berita Teknologi",mynews:"Tempatan",myBig:"Berita Besar",myAll:"Semua Berita",gen:"Berita",watch:"Pantauan",arch:"Arkib",
    upd:"Dikemas kini",next:"Seterusnya",crit:"Kritikal",major:"Besar",nw:"Baharu",why:"Kenapa penting",src:"Sumber",brief:"Ringkasan hari ini",
    critNow:"Kritikal sekarang",alsoMajor:"Berita besar lain",loading:"Memuatkan…",none:"Belum ada ringkasan — kemas kini pertama akan mengisinya.",noitems:"Tiada berita besar di sini buat masa ini.",
    unreach:"Belum dapat capai stor berita. Mencuba lagi…",stale:"Mungkin tidak terkini",live:"TERKINI",old:"LAMA",size:"Saiz teks",back:"← Kembali ke terkini",
@@ -157,11 +157,11 @@ const T={
 };
 const SIZES=[11,12,13,14];
 const SLOTS=[6,12,18,24];
-const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"},tech:{c:"var(--tc)",cls:"c-tech"}};
+const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"},tech:{c:"var(--tc)",cls:"c-tech"},mynews:{c:"var(--my)",cls:"c-my"}};
 const AIRANK=["claude","chatgpt","openai","gemini","google","deepseek","kimi","moonshot","grok","xai","llama","meta","qwen","mistral"];
 const aiRank=i=>{const v=String(i.ai||"").toLowerCase();const k=AIRANK.findIndex(x=>v.includes(x));return k<0?99:k};
 const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",ai:"var(--ai)",tech:"var(--tc)",watch:"var(--major)",arch:"var(--muted)"};
-let S={lang:"en",tab:"top",sub:"ai",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
+let S={lang:"en",tab:"top",sub:"ai",msub:"my",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
 try{const s=JSON.parse(localStorage.getItem("nb-prefs2")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
 function save(){try{localStorage.setItem("nb-prefs2",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -193,6 +193,7 @@ function renderTabs(){
   $("tabs").innerHTML=tabs.map(k=>{
     let n="";
     if(doc&&k==="tech") n=byCat(doc,"ai").length+byCat(doc,"tech").length;
+    else if(doc&&k==="my") n=byCat(doc,"my").length+byCat(doc,"mynews").length;
     else if(doc&&CAT[k]) n=byCat(doc,k).length;
     if(doc&&k==="watch"&&Array.isArray(doc.watch)) n=doc.watch.filter(w=>dayDiff(w.date)>=0).length;
     const on=S.tab===k;
@@ -203,10 +204,10 @@ function renderTabs(){
 function go(tab){S.tab=tab;S.open=null;save();render();window.scrollTo(0,0)}
 function pills(i){
   const imp=i.impact||2;const p=[];
-  p.push(`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`);
+  p.push(imp>=2?`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`:`<span class="pill p-tag">${esc(t("gen"))}</span>`);
   p.push(`<span class="pill p-cat">${esc(t(i.cat)||i.cat)}</span>`);
   if(i.isNew) p.push(`<span class="pill p-new">${esc(t("nw"))}</span>`);
-  if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat==="tech"?"background:var(--tc)":""}">${esc(i.ai)}</span>`);
+  if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat==="tech"?"background:var(--tc)":i.cat==="mynews"?"background:var(--my)":""}">${esc(i.ai)}</span>`);
   if(isRt(i)) p.push(`<span class="pill p-rt">Reuters</span>`);
   (i.tags||[]).slice(0,2).forEach(g=>p.push(`<span class="pill p-tag">${esc(tx(g))}</span>`));
   return p.join("");
@@ -252,7 +253,7 @@ function render(){
   if(S.tab==="arch"){renderArchive(m);return;}
   if(!doc){m.innerHTML=`<div class="empty">${esc(S.state==="loading"?t("loading"):S.state==="unreach"?t("unreach"):t("none"))}</div>`;return;}
   let h=S.viewing?`<button class="btn back" id="back">${esc(t("back"))}</button>`:"";
-  const all=items(doc);
+  const all=items(doc).filter(i=>i.cat!=="mynews");
   if(S.tab==="top"){
     if(doc.headline) h+=`<div class="brief"><div class="k"><span>${esc(t("brief"))}</span><span>${esc(doc.edition||"")}</span></div><p>${esc(tx(doc.headline))}</p></div>`;
     const nc=all.filter(i=>(i.impact||0)>=3).length;
@@ -275,19 +276,22 @@ function render(){
       return `<div class="ev" style="--ec:${dd<0?"var(--muted)":ec}"><div class="h"><span class="cd">${esc(lbl)}</span><span class="dt">${isNaN(d)?esc(x.date):esc(d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short",timeZone:"Asia/Kuala_Lumpur"}))}</span></div><h3>${esc(tx(x.title))}</h3><p>${esc(tx(x.note))}</p></div>`}).join("")}</div>`
       :`<div class="empty">${esc(t("noitems"))}</div>`;
   } else {
-    const cat=S.tab==="tech"?S.sub:S.tab;
+    const cat=S.tab==="tech"?S.sub:S.tab==="my"?S.msub:S.tab;
+    if(S.tab==="my"){const nb=byCat(doc,"my").length,nl=byCat(doc,"mynews").length;
+      h+=`<div class="subtabs"><button data-msub="my" class="${S.msub==="my"?"on":""}" style="${S.msub==="my"?"background:var(--my)":""}">${esc(t("myBig"))}<span class="n">${nb}</span></button><button data-msub="mynews" class="${S.msub==="mynews"?"on":""}" style="${S.msub==="mynews"?"background:var(--my)":""}">${esc(t("myAll"))}<span class="n">${nl}</span></button></div>`;}
     if(S.tab==="tech"){const na=byCat(doc,"ai").length,nt=byCat(doc,"tech").length;
       h+=`<div class="subtabs"><button data-sub="ai" class="${S.sub==="ai"?"on":""}" style="${S.sub==="ai"?"background:var(--ai)":""}">AI<span class="n">${na}</span></button><button data-sub="tech" class="${S.sub==="tech"?"on":""}" style="${S.sub==="tech"?"background:var(--tc)":""}">${esc(t("techNews"))}<span class="n">${nt}</span></button></div>`;}
     const its=byCat(doc,cat);
     const c=(CAT[cat]||{}).c||"var(--ink)";
     const crit=its.filter(i=>(i.impact||0)>=3), maj=its.filter(i=>(i.impact||0)<3);
     if(crit.length){h+=sec(t("crit"),"var(--crit)");h+=crit.map(card).join("");}
-    if(maj.length){h+=sec(t("major"),c);h+=maj.map(card).join("");}
+    if(maj.length){h+=sec(cat==="mynews"?t("myAll"):t("major"),c);h+=maj.map(card).join("");}
     if(!its.length) h+=`<div class="empty">${esc(t("noitems"))}</div>`;
   }
   m.innerHTML=h;
   m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g!=="top")go(g)});
   m.querySelectorAll("[data-sub]").forEach(b=>b.onclick=()=>{S.sub=b.dataset.sub;render()});
+  m.querySelectorAll("[data-msub]").forEach(b=>b.onclick=()=>{S.msub=b.dataset.msub;render()});
   m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.open=b.dataset.open;render()});
   m.querySelectorAll("[data-close]").forEach(b=>b.onclick=e=>{if(e.target.closest("a"))return;S.open=null;render()});
   const b=$("back");if(b)b.onclick=()=>{S.viewing=null;render()};
