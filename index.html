@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big News Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f4f8;--card:#ffffff;--ink:#141824;--muted:#646b7d;--line:#e3e6ee;--soft:#f6f7fa;
+  --crit:#e5383b;--crit-s:#fde8e8;--major:#f59e0b;--major-s:#fff3d6;
+  --my:#1e63d6;--my-s:#e6efff;--gl:#0b9b83;--gl-s:#e0f6f1;--geo:#8b3fd9;--geo-s:#f1e7fd;
+  --new:#12b76a;--rt:#ff7a00;--fs:13px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0e1117;--card:#171b24;--ink:#e9ecf2;--muted:#9aa2b4;--line:#262c39;--soft:#1d2230;
+  --crit-s:#3a1719;--major-s:#3a2c0c;--my-s:#14233f;--gl-s:#0f2e29;--geo-s:#271a3b;}
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:var(--fs);line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 10px 30px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:3px 0 2px}
+.brand{font-size:8.5px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.top{display:flex;align-items:center;gap:5px;margin-top:1px}
+.logo{width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,var(--crit),var(--geo));display:grid;place-items:center;color:#fff;font-weight:800;font-size:10px;flex:none}
+.top h1{font-size:1.08em;font-weight:800;margin:0;flex:1;letter-spacing:-.01em}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.lang button,.btn{font:600 10px Inter,sans-serif;border:0;background:var(--card);color:var(--muted);padding:3px 6px;cursor:pointer}
+.lang button.on{background:var(--ink);color:var(--bg)}
+.btn{border:1px solid var(--line);border-radius:5px}
+.meta{font-size:.8em;color:var(--muted);display:flex;gap:6px;align-items:center;margin:3px 0 0;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:4px;font-weight:600;color:var(--new)}
+.live i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 25%,transparent)}
+.live.stale{color:var(--major)}
+nav{display:flex;gap:3px;overflow-x:auto;padding:6px 0 5px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;font:600 11px Inter,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:3px 9px;cursor:pointer;display:flex;align-items:center;gap:4px}
+nav button .c{width:6px;height:6px;border-radius:50%}
+nav button .n{font-size:9.5px;padding:0 4px;border-radius:99px;background:var(--soft);color:var(--muted)}
+nav button.on{color:#fff;border-color:transparent}
+nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
+
+.brief{border-radius:10px;padding:10px 12px;margin:4px 0 8px;color:#fff;background:linear-gradient(120deg,#141824 0%,#2b1d4a 55%,#5a1d2a 100%)}
+.brief .k{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75;display:flex;justify-content:space-between}
+.brief p{margin:4px 0 0;font-size:1.02em;font-weight:600;line-height:1.4}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+.stat{border:0;border-radius:8px;padding:6px 7px;text-align:left;cursor:pointer;font:inherit;color:var(--ink)}
+.stat b{display:block;font-size:1.35em;font-weight:800;line-height:1.1}
+.stat span{font-size:.75em;font-weight:600;opacity:.85}
+.s-crit{background:var(--crit-s)}.s-crit b{color:var(--crit)}
+.s-my{background:var(--my-s)}.s-my b{color:var(--my)}
+.s-gl{background:var(--gl-s)}.s-gl b{color:var(--gl)}
+.s-geo{background:var(--geo-s)}.s-geo b{color:var(--geo)}
+.mk{display:flex;gap:4px;overflow-x:auto;margin:0 0 10px;scrollbar-width:none}
+.mk::-webkit-scrollbar{display:none}
+.mk div{flex:none;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:3px 7px;font-size:.8em;white-space:nowrap}
+.mk b{font-weight:700;color:var(--muted);margin-right:3px}
+.up{color:var(--new);font-weight:600}.dn{color:var(--crit);font-weight:600}
+
+.sec{display:flex;align-items:center;gap:6px;font-size:.78em;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin:12px 0 6px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec i{width:8px;height:8px;border-radius:2px}
+
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 11px 9px 14px;margin-bottom:7px;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cc)}
+.card.crit{border-color:color-mix(in srgb,var(--crit) 45%,var(--line))}
+.pills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
+.pill{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:4px;line-height:1.3}
+.p-crit{background:var(--crit);color:#fff}
+.p-major{background:var(--major);color:#2b1d00}
+.p-cat{background:var(--cs);color:var(--cc)}
+.p-new{background:var(--new);color:#fff}
+.p-rt{background:var(--rt);color:#fff}
+.p-tag{background:var(--soft);color:var(--muted)}
+.card h2{font-size:1.06em;font-weight:700;line-height:1.35;margin:0 0 4px;letter-spacing:-.005em}
+.card p{margin:0 0 6px;color:var(--ink);opacity:.88;font-size:.96em}
+.why{font-size:.92em;background:var(--cs);border-radius:6px;padding:6px 8px;margin:6px 0 5px;border-left:3px solid var(--cc)}
+.why b{font-size:.78em;letter-spacing:.07em;text-transform:uppercase;color:var(--cc);display:block;margin-bottom:1px}
+.src{font-size:.78em;color:var(--muted)}
+.src a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
+.c-my{--cc:var(--my);--cs:var(--my-s)}.c-global{--cc:var(--gl);--cs:var(--gl-s)}.c-geo{--cc:var(--geo);--cs:var(--geo-s)}
+
+.mini{display:flex;gap:8px;align-items:flex-start;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:5px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.mini .bar{width:4px;align-self:stretch;border-radius:2px;background:var(--cc);flex:none}
+.mini .tx{flex:1;font-size:.95em;font-weight:600;line-height:1.35}
+.mini .tx small{display:block;font-weight:500;color:var(--cc);font-size:.8em;margin-top:1px}
+.mini .ar{color:var(--muted);font-size:.9em}
+
+.tl{position:relative;padding-left:14px}
+.tl::before{content:"";position:absolute;left:4px;top:4px;bottom:4px;width:2px;background:var(--line)}
+.ev{position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin-bottom:6px}
+.ev::before{content:"";position:absolute;left:-14px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--ec);border:2px solid var(--bg)}
+.ev .h{display:flex;gap:6px;align-items:center;margin-bottom:2px}
+.ev .dt{font-size:.78em;font-weight:700;color:var(--muted)}
+.ev .cd{font-size:9px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:4px;background:var(--ec);color:#fff}
+.ev h3{margin:0;font-size:.98em;font-weight:700}
+.ev p{margin:1px 0 0;font-size:.88em;color:var(--muted)}
+
+.empty{text-align:center;color:var(--muted);padding:34px 10px;font-size:.95em}
+.arch{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px;color:var(--ink);font:inherit;cursor:pointer}
+.arch b{font-size:.92em}.arch small{display:block;color:var(--muted);font-size:.82em;margin-top:2px}
+.back{margin:2px 0 8px}
+.panel{position:fixed;right:10px;top:46px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:9;display:none}
+.panel.show{display:block}
+.panel .lbl{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:600}
+.panel .opts{display:flex;gap:3px}
+.panel .opts button.on{background:var(--ink);color:var(--bg)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:.75em;color:var(--muted);margin-top:16px}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.note{font-size:.72em;color:var(--muted);margin-top:6px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">#MadeByHasif</div>
+  <div class="top">
+    <div class="logo">N</div>
+    <h1 id="t-title">Big News Brief</h1>
+    <div class="lang"><button id="l-bm">BM</button><button id="l-en" class="on">EN</button></div>
+    <button class="btn" id="aa" aria-label="Text size">Aa</button>
+  </div>
+  <div class="meta"><span class="live" id="live"><i></i><span id="lv">LIVE</span></span><span id="upd">…</span><span id="next"></span></div>
+  <nav id="tabs"></nav>
+</header>
+<main id="main"><div class="empty">Loading…</div></main>
+<div class="legend" id="legend"></div>
+<div class="note" id="foot"></div>
+</div>
+<div class="panel" id="panel">
+  <div class="lbl" id="t-size">Text size</div>
+  <div class="opts" id="sizes"></div>
+</div>
+<script>
+(function(){
+const T={
+ en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",watch:"Watchlist",arch:"Archive",
+   upd:"Updated",next:"Next",crit:"Critical",major:"Major",nw:"New",why:"Why it matters",src:"Source",brief:"Today in brief",
+   critNow:"Critical now",alsoMajor:"Also major",loading:"Loading…",none:"No briefing yet — the first refresh will fill this in.",noitems:"No big stories here right now.",
+   unreach:"Can't reach the news store yet. Retrying…",stale:"May be out of date",live:"LIVE",old:"OLD",size:"Text size",back:"← Back to latest",
+   archNone:"No past editions yet.",foot:"Auto-refresh daily 6am, then every 3 hours until 9pm (MYT). Big stories only.",viewing:"Edition",stories:"stories",
+   today:"Today",tmr:"Tomorrow",inD:"In {n} days",past:"Passed",lgCrit:"Critical — moves markets / security",lgMajor:"Major",tapMore:"Tap for details"},
+ bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",watch:"Pantauan",arch:"Arkib",
+   upd:"Dikemas kini",next:"Seterusnya",crit:"Kritikal",major:"Besar",nw:"Baharu",why:"Kenapa penting",src:"Sumber",brief:"Ringkasan hari ini",
+   critNow:"Kritikal sekarang",alsoMajor:"Berita besar lain",loading:"Memuatkan…",none:"Belum ada ringkasan — kemas kini pertama akan mengisinya.",noitems:"Tiada berita besar di sini buat masa ini.",
+   unreach:"Belum dapat capai stor berita. Mencuba lagi…",stale:"Mungkin tidak terkini",live:"TERKINI",old:"LAMA",size:"Saiz teks",back:"← Kembali ke terkini",
+   archNone:"Belum ada edisi lepas.",foot:"Kemas kini automatik setiap hari 6 pagi, kemudian setiap 3 jam hingga 9 malam (MYT). Berita besar sahaja.",viewing:"Edisi",stories:"berita",
+   today:"Hari ini",tmr:"Esok",inD:"{n} hari lagi",past:"Lepas",lgCrit:"Kritikal — gugat pasaran / keselamatan",lgMajor:"Besar",tapMore:"Tekan untuk butiran"}
+};
+const SIZES=[11,12,13,14];
+const SLOTS=[6,9,12,15,18,21];
+const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"}};
+const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",watch:"var(--major)",arch:"var(--muted)"};
+let S={lang:"en",tab:"top",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
+try{const s=JSON.parse(localStorage.getItem("nb-prefs2")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
+function save(){try{localStorage.setItem("nb-prefs2",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const tx=o=>o==null?"":(typeof o==="string"?o:(o[S.lang]||o.en||o.bm||""));
+const t=k=>T[S.lang][k];
+const safeUrl=u=>/^https?:\/\//i.test(u||"")?u:"#";
+const loc=()=>S.lang==="bm"?"ms-MY":"en-MY";
+
+function fmtTime(iso){const d=new Date(iso);if(isNaN(d))return "";
+  return d.toLocaleString(loc(),{timeZone:"Asia/Kuala_Lumpur",weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});}
+function myNow(){return new Date(Date.now()+8*3600e3)}
+function nextSlot(){const n=myNow();const h=n.getUTCHours()+n.getUTCMinutes()/60;
+  const s=SLOTS.find(x=>x>h);const hh=s==null?SLOTS[0]:s;const h12=hh>12?hh-12:hh;
+  const ap=hh>=12?(S.lang==="bm"?"ptg":"pm"):(S.lang==="bm"?"pg":"am");
+  return h12+(S.lang==="bm"?" ":"")+ap+(s==null?(S.lang==="bm"?" esok":" tmr"):"");}
+function dayDiff(ds){const today=myNow().toISOString().slice(0,10);return Math.round((new Date(ds+"T00:00:00Z")-new Date(today+"T00:00:00Z"))/864e5)}
+const current=()=>S.viewing||S.latest;
+function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0))}
+function byCat(doc,c){return items(doc).filter(i=>i.cat===c)}
+const isRt=i=>(i.sources||[]).some(s=>/reuters/i.test(s.n||""));
+
+function renderTabs(){
+  const doc=current();
+  const tabs=["top","my","global","geo","watch","arch"];
+  $("tabs").innerHTML=tabs.map(k=>{
+    let n="";
+    if(doc&&CAT[k]) n=byCat(doc,k).length;
+    if(doc&&k==="watch"&&Array.isArray(doc.watch)) n=doc.watch.filter(w=>dayDiff(w.date)>=0).length;
+    const on=S.tab===k;
+    return `<button data-t="${k}" class="${on?"on":""}" style="${on?`background:${TABC[k]}`:""}">${!on&&k!=="arch"?`<span class="c" style="background:${TABC[k]}"></span>`:""}${esc(t(k))}${n!==""?`<span class="n">${n}</span>`:""}</button>`;
+  }).join("");
+  $("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+}
+function go(tab){S.tab=tab;S.open=null;save();render();window.scrollTo(0,0)}
+function pills(i){
+  const imp=i.impact||2;const p=[];
+  p.push(`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`);
+  p.push(`<span class="pill p-cat">${esc(t(i.cat)||i.cat)}</span>`);
+  if(i.isNew) p.push(`<span class="pill p-new">${esc(t("nw"))}</span>`);
+  if(isRt(i)) p.push(`<span class="pill p-rt">Reuters</span>`);
+  (i.tags||[]).slice(0,2).forEach(g=>p.push(`<span class="pill p-tag">${esc(tx(g))}</span>`));
+  return p.join("");
+}
+function card(i){
+  const imp=i.impact||2;const cc=(CAT[i.cat]||CAT.global).cls;
+  const src=(i.sources||[]).slice(0,4).map(s=>`<a href="${esc(safeUrl(s.u))}" target="_blank" rel="noopener">${esc(s.n)}</a>`).join(" · ");
+  return `<article class="card ${cc} ${imp>=3?"crit":""}" id="it-${esc(i.id)}">
+    <div class="pills">${pills(i)}</div>
+    <h2>${esc(tx(i.title))}</h2>
+    <p>${esc(tx(i.summary))}</p>
+    ${i.why?`<div class="why"><b>▸ ${esc(t("why"))}</b>${esc(tx(i.why))}</div>`:""}
+    ${src?`<div class="src">${esc(t("src"))}: ${src}</div>`:""}
+  </article>`;
+}
+function mini(i){
+  const cc=(CAT[i.cat]||CAT.global).cls;
+  if(S.open===i.id) return `<div data-close="${esc(i.id)}">${card(i)}</div>`;
+  return `<button class="mini ${cc}" data-open="${esc(i.id)}"><span class="bar"></span><span class="tx">${esc(tx(i.title))}<small>${esc(t(i.cat))}${i.isNew?" · "+esc(t("nw")):""}${isRt(i)?" · Reuters":""}</small></span><span class="ar">▾</span></button>`;
+}
+function sec(label,color){return `<div class="sec" style="color:${color}"><i style="background:${color}"></i>${esc(label)}</div>`}
+
+function render(){
+  document.documentElement.style.setProperty("--fs",S.fs+"px");
+  document.documentElement.lang=S.lang==="bm"?"ms":"en";
+  $("t-title").textContent=t("title");$("t-size").textContent=t("size");
+  $("l-en").classList.toggle("on",S.lang==="en");$("l-bm").classList.toggle("on",S.lang==="bm");
+  $("sizes").innerHTML=SIZES.map((z,ix)=>`<button class="btn ${S.fs===z?"on":""}" data-z="${z}" style="font-size:${9+ix*1.5}px">A</button>`).join("");
+  $("sizes").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fs=+b.dataset.z;save();render()});
+  $("foot").textContent=t("foot");
+  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--rt)"></i>Reuters</span>`;
+  const doc=current();
+  let stale=S.state==="unreach";
+  if(doc&&doc.updatedAt){
+    const age=(Date.now()-new Date(doc.updatedAt))/3600e3; if(!S.viewing&&age>4) stale=true;
+    $("upd").textContent=(S.viewing?t("viewing"):t("upd"))+" "+fmtTime(doc.updatedAt)+(stale?" · "+t("stale"):"");
+  } else $("upd").textContent=S.state==="unreach"?t("unreach"):(S.state==="loading"?t("loading"):"");
+  $("live").classList.toggle("stale",stale||!!S.viewing);
+  $("lv").textContent=(stale||S.viewing)?t("old"):t("live");
+  $("next").textContent=S.viewing?"":"· "+t("next")+" "+nextSlot();
+  renderTabs();
+  const m=$("main");
+  if(S.tab==="arch"){renderArchive(m);return;}
+  if(!doc){m.innerHTML=`<div class="empty">${esc(S.state==="loading"?t("loading"):S.state==="unreach"?t("unreach"):t("none"))}</div>`;return;}
+  let h=S.viewing?`<button class="btn back" id="back">${esc(t("back"))}</button>`:"";
+  const all=items(doc);
+  if(S.tab==="top"){
+    if(doc.headline) h+=`<div class="brief"><div class="k"><span>${esc(t("brief"))}</span><span>${esc(doc.edition||"")}</span></div><p>${esc(tx(doc.headline))}</p></div>`;
+    const nc=all.filter(i=>(i.impact||0)>=3).length;
+    h+=`<div class="stats">
+      <button class="stat s-crit" data-go="top"><b>${nc}</b><span>${esc(t("crit"))}</span></button>
+      <button class="stat s-my" data-go="my"><b>${byCat(doc,"my").length}</b><span>${esc(t("my"))}</span></button>
+      <button class="stat s-gl" data-go="global"><b>${byCat(doc,"global").length}</b><span>${esc(t("global"))}</span></button>
+      <button class="stat s-geo" data-go="geo"><b>${byCat(doc,"geo").length}</b><span>${esc(t("geo"))}</span></button></div>`;
+    if(Array.isArray(doc.markets)&&doc.markets.length) h+=`<div class="mk">${doc.markets.map(x=>{const d=String(x.d||"").trim();const dn=d.startsWith("-");return `<div><b>${esc(x.k)}</b>${esc(x.v)} ${d?`<span class="${dn?"dn":"up"}">${dn?"▼":"▲"} ${esc(d.replace(/^[+-]/,""))}</span>`:""}</div>`}).join("")}</div>`;
+    const crit=all.filter(i=>(i.impact||0)>=3), maj=all.filter(i=>(i.impact||0)<3);
+    if(crit.length){h+=sec(t("critNow"),"var(--crit)");h+=crit.map(card).join("");}
+    if(maj.length){h+=sec(t("alsoMajor"),"var(--major)");h+=maj.map(mini).join("");}
+    if(!all.length) h+=`<div class="empty">${esc(t("noitems"))}</div>`;
+  } else if(S.tab==="watch"){
+    const w=(Array.isArray(doc.watch)?doc.watch:[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+    h+=w.length?`<div class="tl">${w.map(x=>{const dd=dayDiff(x.date);const d=new Date(x.date+"T00:00:00+08:00");
+      const lbl=isNaN(dd)?"":dd<0?t("past"):dd===0?t("today"):dd===1?t("tmr"):t("inD").replace("{n}",dd);
+      const ec=dd<=0?"var(--crit)":dd<=2?"var(--major)":"var(--my)";
+      return `<div class="ev" style="--ec:${dd<0?"var(--muted)":ec}"><div class="h"><span class="cd">${esc(lbl)}</span><span class="dt">${isNaN(d)?esc(x.date):esc(d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short",timeZone:"Asia/Kuala_Lumpur"}))}</span></div><h3>${esc(tx(x.title))}</h3><p>${esc(tx(x.note))}</p></div>`}).join("")}</div>`
+      :`<div class="empty">${esc(t("noitems"))}</div>`;
+  } else {
+    const its=byCat(doc,S.tab);
+    const c=(CAT[S.tab]||{}).c||"var(--ink)";
+    const crit=its.filter(i=>(i.impact||0)>=3), maj=its.filter(i=>(i.impact||0)<3);
+    if(crit.length){h+=sec(t("crit"),"var(--crit)");h+=crit.map(card).join("");}
+    if(maj.length){h+=sec(t("major"),c);h+=maj.map(card).join("");}
+    if(!its.length) h+=`<div class="empty">${esc(t("noitems"))}</div>`;
+  }
+  m.innerHTML=h;
+  m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g!=="top")go(g)});
+  m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.open=b.dataset.open;render()});
+  m.querySelectorAll("[data-close]").forEach(b=>b.onclick=e=>{if(e.target.closest("a"))return;S.open=null;render()});
+  const b=$("back");if(b)b.onclick=()=>{S.viewing=null;render()};
+}
+function renderArchive(m){
+  if(!S.archive.length){m.innerHTML=`<div class="empty">${esc(t("archNone"))}</div>`;return;}
+  m.innerHTML=S.archive.map((a,ix)=>{const its=a.items||[];const nc=its.filter(i=>(i.impact||0)>=3).length;
+    return `<button class="arch" data-i="${ix}"><b>${esc(fmtTime(a.updatedAt)||a.date)}</b> <span class="pill p-crit">${nc} ${esc(t("crit"))}</span> <span class="pill p-tag">${its.length} ${esc(t("stories"))}</span><small>${esc(tx(a.headline).slice(0,150))}</small></button>`}).join("");
+  m.querySelectorAll(".arch").forEach(b=>b.onclick=()=>{S.viewing=S.archive[+b.dataset.i];S.tab="top";render();window.scrollTo(0,0)});
+}
+$("l-en").onclick=()=>{S.lang="en";save();render()};
+$("l-bm").onclick=()=>{S.lang="bm";save();render()};
+$("aa").onclick=e=>{e.stopPropagation();$("panel").classList.toggle("show")};
+document.addEventListener("click",e=>{if(!$("panel").contains(e.target)&&e.target.id!=="aa")$("panel").classList.remove("show")});
+render();
+setInterval(()=>{if(!S.viewing)render()},60000);
+
+(async()=>{
+  const timer=setTimeout(()=>{if(S.state==="loading"){S.state="unreach";render();}},10000);
+  async function load(){
+    try{
+      const bust="?t="+Date.now();
+      const r=await fetch("data/latest.json"+bust,{cache:"no-store"});
+      if(!r.ok) throw new Error(r.status);
+      const j=await r.json();
+      clearTimeout(timer);
+      if(!S.latest||S.latest.updatedAt!==j.updatedAt){S.latest=j;S.state="ok";render();}
+      try{const a=await fetch("data/archive.json"+bust,{cache:"no-store"});if(a.ok){S.archive=(await a.json()).slice().sort((x,y)=>String(y.date).localeCompare(String(x.date)));if(S.tab==="arch")render();}}catch(e){}
+    }catch(e){ if(!S.latest){S.state="unreach";render();} }
+  }
+  load();
+  setInterval(load,10*60*1000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
+})();
+})();
+</script>
+</body>
+</html>
