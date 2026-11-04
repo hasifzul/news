@@ -187,7 +187,7 @@ function nextSlot(){const n=myNow();const h=n.getUTCHours()+n.getUTCMinutes()/60
   return h12+(S.lang==="bm"?" ":"")+ap;}
 function dayDiff(ds){const today=myNow().toISOString().slice(0,10);return Math.round((new Date(ds+"T00:00:00Z")-new Date(today+"T00:00:00Z"))/864e5)}
 const current=()=>S.viewing||S.latest;
-function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0))}
+function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0)||String(b.when||"").localeCompare(String(a.when||"")))}
 function byCat(doc,c){const r=items(doc).filter(i=>i.cat===c);if(c==="ai")r.sort((a,b)=>(b.impact||0)-(a.impact||0)||aiRank(a)-aiRank(b));if(c==="mynews")r.sort((a,b)=>(a.pop||99)-(b.pop||99));return r}
 const isRt=i=>(i.sources||[]).some(s=>/reuters/i.test(s.n||""));
 const isAw=i=>(i.sources||[]).some(s=>/awani/i.test((s.n||"")+(s.u||"")));
