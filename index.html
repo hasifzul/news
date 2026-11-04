@@ -161,7 +161,7 @@ const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},g
 const AIRANK=["claude","chatgpt","openai","gemini","google","deepseek","kimi","moonshot","grok","xai","llama","meta","qwen","mistral"];
 const aiRank=i=>{const v=String(i.ai||"").toLowerCase();const k=AIRANK.findIndex(x=>v.includes(x));return k<0?99:k};
 const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",ai:"var(--ai)",tech:"var(--tc)",watch:"var(--major)",arch:"var(--muted)"};
-let S={lang:"en",tab:"top",sub:"ai",msub:"my",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
+let S={lang:"en",tab:"top",sub:"ai",msub:"mynews",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
 try{const s=JSON.parse(localStorage.getItem("nb-prefs2")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
 function save(){try{localStorage.setItem("nb-prefs2",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -184,7 +184,7 @@ function nextSlot(){const n=myNow();const h=n.getUTCHours()+n.getUTCMinutes()/60
 function dayDiff(ds){const today=myNow().toISOString().slice(0,10);return Math.round((new Date(ds+"T00:00:00Z")-new Date(today+"T00:00:00Z"))/864e5)}
 const current=()=>S.viewing||S.latest;
 function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0))}
-function byCat(doc,c){const r=items(doc).filter(i=>i.cat===c);if(c==="ai")r.sort((a,b)=>(b.impact||0)-(a.impact||0)||aiRank(a)-aiRank(b));return r}
+function byCat(doc,c){const r=items(doc).filter(i=>i.cat===c);if(c==="ai")r.sort((a,b)=>(b.impact||0)-(a.impact||0)||aiRank(a)-aiRank(b));if(c==="mynews")r.sort((a,b)=>(a.pop||99)-(b.pop||99));return r}
 const isRt=i=>(i.sources||[]).some(s=>/reuters/i.test(s.n||""));
 
 function renderTabs(){
@@ -278,14 +278,17 @@ function render(){
   } else {
     const cat=S.tab==="tech"?S.sub:S.tab==="my"?S.msub:S.tab;
     if(S.tab==="my"){const nb=byCat(doc,"my").length,nl=byCat(doc,"mynews").length;
-      h+=`<div class="subtabs"><button data-msub="my" class="${S.msub==="my"?"on":""}" style="${S.msub==="my"?"background:var(--my)":""}">${esc(t("myBig"))}<span class="n">${nb}</span></button><button data-msub="mynews" class="${S.msub==="mynews"?"on":""}" style="${S.msub==="mynews"?"background:var(--my)":""}">${esc(t("myAll"))}<span class="n">${nl}</span></button></div>`;}
+      h+=`<div class="subtabs"><button data-msub="mynews" class="${S.msub==="mynews"?"on":""}" style="${S.msub==="mynews"?"background:var(--my)":""}">${esc(t("myAll"))}<span class="n">${nl}</span></button><button data-msub="my" class="${S.msub==="my"?"on":""}" style="${S.msub==="my"?"background:var(--my)":""}">${esc(t("myBig"))}<span class="n">${nb}</span></button></div>`;}
     if(S.tab==="tech"){const na=byCat(doc,"ai").length,nt=byCat(doc,"tech").length;
       h+=`<div class="subtabs"><button data-sub="ai" class="${S.sub==="ai"?"on":""}" style="${S.sub==="ai"?"background:var(--ai)":""}">AI<span class="n">${na}</span></button><button data-sub="tech" class="${S.sub==="tech"?"on":""}" style="${S.sub==="tech"?"background:var(--tc)":""}">${esc(t("techNews"))}<span class="n">${nt}</span></button></div>`;}
     const its=byCat(doc,cat);
     const c=(CAT[cat]||{}).c||"var(--ink)";
+    if(cat==="mynews"){ if(its.length){h+=sec(t("myAll"),c);h+=its.map(card).join("");} }
+    else{
     const crit=its.filter(i=>(i.impact||0)>=3), maj=its.filter(i=>(i.impact||0)<3);
     if(crit.length){h+=sec(t("crit"),"var(--crit)");h+=crit.map(card).join("");}
-    if(maj.length){h+=sec(cat==="mynews"?t("myAll"):t("major"),c);h+=maj.map(card).join("");}
+    if(maj.length){h+=sec(t("major"),c);h+=maj.map(card).join("");}
+    }
     if(!its.length) h+=`<div class="empty">${esc(t("noitems"))}</div>`;
   }
   m.innerHTML=h;
