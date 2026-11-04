@@ -11,11 +11,11 @@
   --bg:#f3f4f8;--card:#ffffff;--ink:#141824;--muted:#646b7d;--line:#e3e6ee;--soft:#f6f7fa;
   --crit:#e5383b;--crit-s:#fde8e8;--major:#f59e0b;--major-s:#fff3d6;
   --my:#1e63d6;--my-s:#e6efff;--gl:#0b9b83;--gl-s:#e0f6f1;--geo:#8b3fd9;--geo-s:#f1e7fd;
-  --ai:#d6336c;--ai-s:#fde6ee;--tc:#0891b2;--tc-s:#e0f5fa;--new:#12b76a;--rt:#ff7a00;--fs:13px;
+  --ai:#d6336c;--ai-s:#fde6ee;--tc:#0891b2;--tc-s:#e0f5fa;--hl:#e8590c;--hl-s:#fff0e6;--ap:#4b5563;--ap-s:#eef0f3;--an:#1e9e4a;--an-s:#e5f6ea;--new:#12b76a;--rt:#ff7a00;--fs:13px;
 }
 @media (prefers-color-scheme:dark){
   :root{--bg:#0e1117;--card:#171b24;--ink:#e9ecf2;--muted:#9aa2b4;--line:#262c39;--soft:#1d2230;
-  --crit-s:#3a1719;--ai-s:#3a1324;--tc-s:#0d2d36;--major-s:#3a2c0c;--my-s:#14233f;--gl-s:#0f2e29;--geo-s:#271a3b;}
+  --crit-s:#3a1719;--ai-s:#3a1324;--tc-s:#0d2d36;--hl-s:#3a2010;--ap:#9ca3af;--ap-s:#262a31;--an-s:#10301c;--major-s:#3a2c0c;--my-s:#14233f;--gl-s:#0f2e29;--geo-s:#271a3b;}
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:var(--fs);line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -76,7 +76,7 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 .p-aw{background:#c8102e;color:#fff}
 .p-tag{background:var(--soft);color:var(--muted)}
 .p-aiv{background:var(--ai);color:#fff}
-.subtabs{display:flex;gap:4px;margin:2px 0 6px}
+.subtabs{display:flex;gap:4px;margin:2px 0 6px;overflow-x:auto;scrollbar-width:none}.subtabs::-webkit-scrollbar{display:none}.subtabs button{flex:none}
 .subtabs button{font:700 10.5px Inter,sans-serif;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:6px;padding:3px 10px;cursor:pointer}
 .subtabs button.on{color:#fff;border-color:transparent}
 .subtabs .n{font-weight:600;opacity:.75;margin-left:3px}
@@ -86,7 +86,7 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 .why b{font-size:.78em;letter-spacing:.07em;text-transform:uppercase;color:var(--cc);display:block;margin-bottom:1px}
 .src{font-size:.78em;color:var(--muted)}
 .src a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--muted)}
-.c-ai{--cc:var(--ai);--cs:var(--ai-s)}.c-tech{--cc:var(--tc);--cs:var(--tc-s)}.c-my{--cc:var(--my);--cs:var(--my-s)}.c-global{--cc:var(--gl);--cs:var(--gl-s)}.c-geo{--cc:var(--geo);--cs:var(--geo-s)}
+.c-ai{--cc:var(--ai);--cs:var(--ai-s)}.c-tech{--cc:var(--tc);--cs:var(--tc-s)}.c-health{--cc:var(--hl);--cs:var(--hl-s)}.c-apple{--cc:var(--ap);--cs:var(--ap-s)}.c-android{--cc:var(--an);--cs:var(--an-s)}.c-my{--cc:var(--my);--cs:var(--my-s)}.c-global{--cc:var(--gl);--cs:var(--gl-s)}.c-geo{--cc:var(--geo);--cs:var(--geo-s)}
 
 .mini{display:flex;gap:8px;align-items:flex-start;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:5px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
 .mini .bar{width:4px;align-self:stretch;border-radius:2px;background:var(--cc);flex:none}
@@ -143,13 +143,13 @@ nav button.on .n{background:rgba(255,255,255,.25);color:#fff}
 <script>
 (function(){
 const T={
- en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",tech:"Tech",techTab:"Tech",techNews:"Tech News",mynews:"Local",myBig:"Big News",myAll:"All News",gen:"News",watch:"Watchlist",arch:"Archive",
+ en:{title:"Big News Brief",top:"Top",my:"Malaysia",global:"Global",geo:"Geopolitics",ai:"AI",tech:"Tech",techTab:"Tech",techNews:"Tech News",mynews:"Local",myBig:"Big News",myAll:"All News",gen:"News",health:"Health & Awareness",gNews:"Global News",apple:"Apple",android:"Google/Android",otherTech:"Other Tech",watch:"Watchlist",arch:"Archive",
    upd:"Updated",next:"Next",crit:"Critical",major:"Major",nw:"New",why:"Why it matters",src:"Source",brief:"Today in brief",
    critNow:"Critical now",alsoMajor:"Also major",loading:"Loading…",none:"No briefing yet — the first refresh will fill this in.",noitems:"No big stories here right now.",
    unreach:"Can't reach the news store yet. Retrying…",stale:"May be out of date",live:"LIVE",old:"OLD",size:"Text size",back:"← Back to latest",
    archNone:"No past editions yet.",foot:"Auto-refresh every 3 hours (MYT). Big stories + top Malaysian news.",viewing:"Edition",stories:"stories",
    today:"Today",tmr:"Tomorrow",inD:"In {n} days",past:"Passed",lgCrit:"Critical — moves markets / security",lgMajor:"Major",tapMore:"Tap for details"},
- bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",tech:"Teknologi",techTab:"Teknologi",techNews:"Berita Teknologi",mynews:"Tempatan",myBig:"Berita Besar",myAll:"Semua Berita",gen:"Berita",watch:"Pantauan",arch:"Arkib",
+ bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",ai:"AI",tech:"Teknologi",techTab:"Teknologi",techNews:"Berita Teknologi",mynews:"Tempatan",myBig:"Berita Besar",myAll:"Semua Berita",gen:"Berita",health:"Kesihatan & Kesedaran",gNews:"Berita Global",apple:"Apple",android:"Google/Android",otherTech:"Teknologi Lain",watch:"Pantauan",arch:"Arkib",
    upd:"Dikemas kini",next:"Seterusnya",crit:"Kritikal",major:"Besar",nw:"Baharu",why:"Kenapa penting",src:"Sumber",brief:"Ringkasan hari ini",
    critNow:"Kritikal sekarang",alsoMajor:"Berita besar lain",loading:"Memuatkan…",none:"Belum ada ringkasan — kemas kini pertama akan mengisinya.",noitems:"Tiada berita besar di sini buat masa ini.",
    unreach:"Belum dapat capai stor berita. Mencuba lagi…",stale:"Mungkin tidak terkini",live:"TERKINI",old:"LAMA",size:"Saiz teks",back:"← Kembali ke terkini",
@@ -158,13 +158,15 @@ const T={
 };
 const SIZES=[11,12,13,14];
 const SLOTS=[3,6,9,12,15,18,21,24];
-const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"},tech:{c:"var(--tc)",cls:"c-tech"},mynews:{c:"var(--my)",cls:"c-my"}};
+const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"},ai:{c:"var(--ai)",cls:"c-ai"},tech:{c:"var(--tc)",cls:"c-tech"},mynews:{c:"var(--my)",cls:"c-my"},health:{c:"var(--hl)",cls:"c-health"},apple:{c:"var(--ap)",cls:"c-apple"},android:{c:"var(--an)",cls:"c-android"}};
+const SUBS={my:["mynews","my"],global:["global","health"],tech:["ai","apple","android","tech"]};
+const SUBL={mynews:"myAll",my:"myBig",global:"gNews",health:"health",ai:"ai",apple:"apple",android:"android",tech:"otherTech"};
 const AIRANK=["claude","chatgpt","openai","gemini","google","deepseek","kimi","moonshot","grok","xai","llama","meta","qwen","mistral"];
 const aiRank=i=>{const v=String(i.ai||"").toLowerCase();const k=AIRANK.findIndex(x=>v.includes(x));return k<0?99:k};
 const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",ai:"var(--ai)",tech:"var(--tc)",watch:"var(--major)",arch:"var(--muted)"};
-let S={lang:"en",tab:"top",sub:"ai",msub:"mynews",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
-try{const s=JSON.parse(localStorage.getItem("nb-prefs2")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
-function save(){try{localStorage.setItem("nb-prefs2",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
+let S={lang:"bm",tab:"top",subs:{my:"mynews",global:"global",tech:"ai"},fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
+try{const s=JSON.parse(localStorage.getItem("nb-prefs3")||"{}");if(s.lang)S.lang=s.lang;if(SIZES.includes(s.fs))S.fs=s.fs;if(s.tab)S.tab=s.tab;}catch(e){}
+function save(){try{localStorage.setItem("nb-prefs3",JSON.stringify({lang:S.lang,fs:S.fs,tab:S.tab}))}catch(e){}}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const tx=o=>o==null?"":(typeof o==="string"?o:(o[S.lang]||o.en||o.bm||""));
@@ -194,8 +196,7 @@ function renderTabs(){
   const tabs=["top","my","global","geo","tech","watch","arch"];
   $("tabs").innerHTML=tabs.map(k=>{
     let n="";
-    if(doc&&k==="tech") n=byCat(doc,"ai").length+byCat(doc,"tech").length;
-    else if(doc&&k==="my") n=byCat(doc,"my").length+byCat(doc,"mynews").length;
+    if(doc&&SUBS[k]) n=SUBS[k].reduce((a,c)=>a+byCat(doc,c).length,0);
     else if(doc&&CAT[k]) n=byCat(doc,k).length;
     if(doc&&k==="watch"&&Array.isArray(doc.watch)) n=doc.watch.filter(w=>dayDiff(w.date)>=0).length;
     const on=S.tab===k;
@@ -209,7 +210,7 @@ function pills(i){
   p.push(imp>=2?`<span class="pill ${imp>=3?"p-crit":"p-major"}">${imp>=3?"● ":""}${esc(imp>=3?t("crit"):t("major"))}</span>`:`<span class="pill p-tag">${esc(t("gen"))}</span>`);
   p.push(`<span class="pill p-cat">${esc(t(i.cat)||i.cat)}</span>`);
   if(i.isNew) p.push(`<span class="pill p-new">${esc(t("nw"))}</span>`);
-  if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat==="tech"?"background:var(--tc)":i.cat==="mynews"?"background:var(--my)":""}">${esc(i.ai)}</span>`);
+  if(i.ai) p.push(`<span class="pill p-aiv" style="${i.cat!=="ai"&&CAT[i.cat]?"background:"+CAT[i.cat].c:""}">${esc(i.ai)}</span>`);
   if(isRt(i)) p.push(`<span class="pill p-rt">Reuters</span>`);
   if(isAw(i)) p.push(`<span class="pill p-aw">Awani</span>`);
   (i.tags||[]).slice(0,2).forEach(g=>p.push(`<span class="pill p-tag">${esc(tx(g))}</span>`));
@@ -241,7 +242,7 @@ function render(){
   $("sizes").innerHTML=SIZES.map((z,ix)=>`<button class="btn ${S.fs===z?"on":""}" data-z="${z}" style="font-size:${9+ix*1.5}px">A</button>`).join("");
   $("sizes").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fs=+b.dataset.z;save();render()});
   $("foot").textContent=t("foot");
-  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--tc)"></i>${esc(t("techNews"))}</span><span><i style="background:var(--rt)"></i>Reuters</span><span><i style="background:#c8102e"></i>Awani</span>`;
+  $("legend").innerHTML=`<span><i style="background:var(--crit)"></i>${esc(t("lgCrit"))}</span><span><i style="background:var(--major)"></i>${esc(t("lgMajor"))}</span><span><i style="background:var(--my)"></i>${esc(t("my"))}</span><span><i style="background:var(--gl)"></i>${esc(t("global"))}</span><span><i style="background:var(--geo)"></i>${esc(t("geo"))}</span><span><i style="background:var(--ai)"></i>AI</span><span><i style="background:var(--ap)"></i>Apple</span><span><i style="background:var(--an)"></i>Google/Android</span><span><i style="background:var(--tc)"></i>${esc(t("otherTech"))}</span><span><i style="background:var(--hl)"></i>${esc(t("health"))}</span><span><i style="background:var(--rt)"></i>Reuters</span><span><i style="background:#c8102e"></i>Awani</span>`;
   const doc=current();
   let stale=S.state==="unreach";
   if(doc&&doc.updatedAt){
@@ -265,7 +266,7 @@ function render(){
       <button class="stat s-my" data-go="my"><b>${byCat(doc,"my").length}</b><span>${esc(t("my"))}</span></button>
       <button class="stat s-gl" data-go="global"><b>${byCat(doc,"global").length}</b><span>${esc(t("global"))}</span></button>
       <button class="stat s-geo" data-go="geo"><b>${byCat(doc,"geo").length}</b><span>${esc(t("geo"))}</span></button>
-      <button class="stat s-ai" data-go="tech"><b>${byCat(doc,"ai").length+byCat(doc,"tech").length}</b><span>${esc(t("techTab"))}</span></button></div>`;
+      <button class="stat s-ai" data-go="tech"><b>${SUBS.tech.reduce((a,c)=>a+byCat(doc,c).length,0)}</b><span>${esc(t("techTab"))}</span></button></div>`;
     if(Array.isArray(doc.markets)&&doc.markets.length) h+=`<div class="mk">${doc.markets.map(x=>{const d=String(x.d||"").trim();const dn=d.startsWith("-");return `<div><b>${esc(x.k)}</b>${esc(x.v)} ${d?`<span class="${dn?"dn":"up"}">${dn?"▼":"▲"} ${esc(d.replace(/^[+-]/,""))}</span>`:""}</div>`}).join("")}</div>`;
     const crit=all.filter(i=>(i.impact||0)>=3), maj=all.filter(i=>(i.impact||0)<3);
     if(crit.length){h+=sec(t("critNow"),"var(--crit)");h+=crit.map(card).join("");}
@@ -279,11 +280,9 @@ function render(){
       return `<div class="ev" style="--ec:${dd<0?"var(--muted)":ec}"><div class="h"><span class="cd">${esc(lbl)}</span><span class="dt">${isNaN(d)?esc(x.date):esc(d.toLocaleDateString(loc(),{weekday:"short",day:"numeric",month:"short",timeZone:"Asia/Kuala_Lumpur"}))}</span></div><h3>${esc(tx(x.title))}</h3><p>${esc(tx(x.note))}</p></div>`}).join("")}</div>`
       :`<div class="empty">${esc(t("noitems"))}</div>`;
   } else {
-    const cat=S.tab==="tech"?S.sub:S.tab==="my"?S.msub:S.tab;
-    if(S.tab==="my"){const nb=byCat(doc,"my").length,nl=byCat(doc,"mynews").length;
-      h+=`<div class="subtabs"><button data-msub="mynews" class="${S.msub==="mynews"?"on":""}" style="${S.msub==="mynews"?"background:var(--my)":""}">${esc(t("myAll"))}<span class="n">${nl}</span></button><button data-msub="my" class="${S.msub==="my"?"on":""}" style="${S.msub==="my"?"background:var(--my)":""}">${esc(t("myBig"))}<span class="n">${nb}</span></button></div>`;}
-    if(S.tab==="tech"){const na=byCat(doc,"ai").length,nt=byCat(doc,"tech").length;
-      h+=`<div class="subtabs"><button data-sub="ai" class="${S.sub==="ai"?"on":""}" style="${S.sub==="ai"?"background:var(--ai)":""}">AI<span class="n">${na}</span></button><button data-sub="tech" class="${S.sub==="tech"?"on":""}" style="${S.sub==="tech"?"background:var(--tc)":""}">${esc(t("techNews"))}<span class="n">${nt}</span></button></div>`;}
+    const cat=SUBS[S.tab]?S.subs[S.tab]:S.tab;
+    if(SUBS[S.tab]){
+      h+=`<div class="subtabs">${SUBS[S.tab].map(c=>{const on=c===cat;return `<button data-sub2="${c}" class="${on?"on":""}" style="${on?"background:"+CAT[c].c:""}">${esc(t(SUBL[c]))}<span class="n">${byCat(doc,c).length}</span></button>`}).join("")}</div>`;}
     const its=byCat(doc,cat);
     const c=(CAT[cat]||{}).c||"var(--ink)";
     if(cat==="mynews"){ if(its.length){h+=sec(t("myAll"),c);h+=its.map(card).join("");} }
@@ -296,8 +295,7 @@ function render(){
   }
   m.innerHTML=h;
   m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g!=="top")go(g)});
-  m.querySelectorAll("[data-sub]").forEach(b=>b.onclick=()=>{S.sub=b.dataset.sub;render()});
-  m.querySelectorAll("[data-msub]").forEach(b=>b.onclick=()=>{S.msub=b.dataset.msub;render()});
+  m.querySelectorAll("[data-sub2]").forEach(b=>b.onclick=()=>{S.subs[S.tab]=b.dataset.sub2;render()});
   m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{S.open=b.dataset.open;render()});
   m.querySelectorAll("[data-close]").forEach(b=>b.onclick=e=>{if(e.target.closest("a"))return;S.open=null;render()});
   const b=$("back");if(b)b.onclick=()=>{S.viewing=null;render()};
