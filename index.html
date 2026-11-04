@@ -140,17 +140,17 @@ const T={
    upd:"Updated",next:"Next",crit:"Critical",major:"Major",nw:"New",why:"Why it matters",src:"Source",brief:"Today in brief",
    critNow:"Critical now",alsoMajor:"Also major",loading:"Loading…",none:"No briefing yet — the first refresh will fill this in.",noitems:"No big stories here right now.",
    unreach:"Can't reach the news store yet. Retrying…",stale:"May be out of date",live:"LIVE",old:"OLD",size:"Text size",back:"← Back to latest",
-   archNone:"No past editions yet.",foot:"Auto-refresh daily 6am, then every 3 hours until 9pm (MYT). Big stories only.",viewing:"Edition",stories:"stories",
+   archNone:"No past editions yet.",foot:"Auto-refresh 4× daily: 6am, 12pm, 6pm, 12am (MYT). Big stories only.",viewing:"Edition",stories:"stories",
    today:"Today",tmr:"Tomorrow",inD:"In {n} days",past:"Passed",lgCrit:"Critical — moves markets / security",lgMajor:"Major",tapMore:"Tap for details"},
  bm:{title:"Ringkasan Berita Besar",top:"Utama",my:"Malaysia",global:"Global",geo:"Geopolitik",watch:"Pantauan",arch:"Arkib",
    upd:"Dikemas kini",next:"Seterusnya",crit:"Kritikal",major:"Besar",nw:"Baharu",why:"Kenapa penting",src:"Sumber",brief:"Ringkasan hari ini",
    critNow:"Kritikal sekarang",alsoMajor:"Berita besar lain",loading:"Memuatkan…",none:"Belum ada ringkasan — kemas kini pertama akan mengisinya.",noitems:"Tiada berita besar di sini buat masa ini.",
    unreach:"Belum dapat capai stor berita. Mencuba lagi…",stale:"Mungkin tidak terkini",live:"TERKINI",old:"LAMA",size:"Saiz teks",back:"← Kembali ke terkini",
-   archNone:"Belum ada edisi lepas.",foot:"Kemas kini automatik setiap hari 6 pagi, kemudian setiap 3 jam hingga 9 malam (MYT). Berita besar sahaja.",viewing:"Edisi",stories:"berita",
+   archNone:"Belum ada edisi lepas.",foot:"Kemas kini automatik 4× sehari: 6 pagi, 12 tengah hari, 6 petang, 12 tengah malam (MYT). Berita besar sahaja.",viewing:"Edisi",stories:"berita",
    today:"Hari ini",tmr:"Esok",inD:"{n} hari lagi",past:"Lepas",lgCrit:"Kritikal — gugat pasaran / keselamatan",lgMajor:"Besar",tapMore:"Tekan untuk butiran"}
 };
 const SIZES=[11,12,13,14];
-const SLOTS=[6,9,12,15,18,21];
+const SLOTS=[6,12,18,24];
 const CAT={my:{c:"var(--my)",cls:"c-my"},global:{c:"var(--gl)",cls:"c-global"},geo:{c:"var(--geo)",cls:"c-geo"}};
 const TABC={top:"var(--crit)",my:"var(--my)",global:"var(--gl)",geo:"var(--geo)",watch:"var(--major)",arch:"var(--muted)"};
 let S={lang:"en",tab:"top",fs:13,latest:null,archive:[],viewing:null,state:"loading",open:null};
@@ -167,9 +167,12 @@ function fmtTime(iso){const d=new Date(iso);if(isNaN(d))return "";
   return d.toLocaleString(loc(),{timeZone:"Asia/Kuala_Lumpur",weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});}
 function myNow(){return new Date(Date.now()+8*3600e3)}
 function nextSlot(){const n=myNow();const h=n.getUTCHours()+n.getUTCMinutes()/60;
-  const s=SLOTS.find(x=>x>h);const hh=s==null?SLOTS[0]:s;const h12=hh>12?hh-12:hh;
-  const ap=hh>=12?(S.lang==="bm"?"ptg":"pm"):(S.lang==="bm"?"pg":"am");
-  return h12+(S.lang==="bm"?" ":"")+ap+(s==null?(S.lang==="bm"?" esok":" tmr"):"");}
+  const s=SLOTS.find(x=>x>h);const hh=s==null?SLOTS[0]:s;
+  if(hh===24) return S.lang==="bm"?"12 tengah malam":"12am";
+  if(hh===12) return S.lang==="bm"?"12 tengah hari":"12pm";
+  const h12=hh>12?hh-12:hh;
+  const ap=hh>12?(S.lang==="bm"?"ptg":"pm"):(S.lang==="bm"?"pg":"am");
+  return h12+(S.lang==="bm"?" ":"")+ap;}
 function dayDiff(ds){const today=myNow().toISOString().slice(0,10);return Math.round((new Date(ds+"T00:00:00Z")-new Date(today+"T00:00:00Z"))/864e5)}
 const current=()=>S.viewing||S.latest;
 function items(doc){return (doc&&Array.isArray(doc.items)?doc.items:[]).slice().sort((a,b)=>(b.impact||0)-(a.impact||0))}
@@ -228,7 +231,7 @@ function render(){
   const doc=current();
   let stale=S.state==="unreach";
   if(doc&&doc.updatedAt){
-    const age=(Date.now()-new Date(doc.updatedAt))/3600e3; if(!S.viewing&&age>4) stale=true;
+    const age=(Date.now()-new Date(doc.updatedAt))/3600e3; if(!S.viewing&&age>7) stale=true;
     $("upd").textContent=(S.viewing?t("viewing"):t("upd"))+" "+fmtTime(doc.updatedAt)+(stale?" · "+t("stale"):"");
   } else $("upd").textContent=S.state==="unreach"?t("unreach"):(S.state==="loading"?t("loading"):"");
   $("live").classList.toggle("stale",stale||!!S.viewing);
